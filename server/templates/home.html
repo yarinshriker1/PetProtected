@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" ng-controller="homeCtrl">
+    <div id="categoryNav">
+        <ul class="nav nav-tabs">
+            <li class="nav-item active" ng-repeat="cat in categories">
+                <a class="nav-link" ng-class="{'active': currentCategory === cat}"
+                   href="" ng-click="setCurrentCategory(cat)"><i ng-class="{'fas fa-bone': cat === 'Games', 'fas fa-drumstick-bite': cat === 'Food',
+                   'fas fa-tshirt': cat === 'Clothes', 'bi bi-basket-fill': cat === 'Textile'}"></i> {[{ cat }]}</a>
+            </li>
+            <div class="wrapper" style="right: 150px">
+                <div class="icon facebook" onclick="window.open(
+                              'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+                              'facebook-share-dialog',
+                              'width=626,height=436');
+                            return false;">
+                    <div class="tooltip">Facebook</div>
+                    <span><i class="fab fa-facebook-f"></i></span>
+                </div>
+
+                <div class="icon instagram"
+                     onclick="window.open('https://www.instagram.com/pet_protected/', '_blank'); return false;"
+                >
+                    <div class="tooltip">Instagram</div>
+                    <span><i class="fab fa-instagram"></i></span>
+                </div>
+                <div class="icon github"
+                     onclick="window.open('https://github.com/EladAM52/Pet_Protected', '_blank'); return false;">
+                    <div class="tooltip">Github</div>
+                    <span><i class="fab fa-github"></i></span>
+                </div>
+            </div>
+        </ul>
+    </div>
+    <div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 20px">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPostModal"
+                ng-disabled="!isAuthenticated">
+            Add new post
+        </button>
+        <button ng-if="isAuthenticated" type="button" class="btn btn-primary" ng-class="{'active': showMyPosts }"
+                ng-click="toggleShowMyPosts()">Show my posts
+        </button>
+        <button ng-if="isAuthenticated" type="button" class="btn btn-primary" ng-class="{'active': showFavorites }"
+                ng-click="toggleShowFavorites()">Show favorites
+        </button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addReviewModal">
+            Add new Review
+        </button>
+
+    </div>
+    <!--Search Bar-->
+    <form class="d-flex" style="float: right; margin-top: 25px">
+        <input class="form-control me-2" type="search" placeholder="Search Post" aria-label="Search"
+               ng-model="search">
+        <button class="btn btn-info" type="submit"><i class="fas fa-search"></i></button>
+    </form>
+    <!-- create post Modal -->
+    <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPostModalLabel">Add Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input class="form-control" id="title" ng-model="postData.title" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description"
+                                      ng-model="postData.description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select class="custom-select" id="category" ng-model="postData.category" required>
+                                <option value="{[{ cat }]}" ng-repeat="cat in categories">{[{ cat }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Status</label>
+                            <select class="custom-select" id="status" ng-model="postData.status" required>
+                                <option value="{[{ sta }]}" ng-repeat="sta in status">{[{ sta }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">Select a file: </label>
+                            <input id="file" type="file" file="file" accept="image/*"/>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="error">{[{error}]}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" ng-click="createPost()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- create Review Modal -->
+    <div class="modal fade" id="addReviewModal" tabindex="-1" arxia-labelledby="addReviewModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addReviewModalLabel">Add Review</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="title">Full Name</label>
+                            <input class="form-control" id="Fullname" ng-model="reviewData.Fullname" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input class="form-control" id="title" ng-model="reviewData.title" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description"
+                                      ng-model="reviewData.description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Email</label>
+                            <input class="form-control" id="email" ng-model="reviewData.email" required/>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="error">{[{error}]}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" ng-click="createReview()">Add Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- create edit Modal -->
+    <div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPostModalLabel">Edit Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input class="form-control" id="title" ng-model="postToEdit.title" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description"
+                                      ng-model="postToEdit.description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select class="custom-select" id="category" ng-model="postToEdit.category" required>
+                                <option value="{[{ cat }]}" ng-repeat="cat in categories">{[{ cat }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Status</label>
+                            <select class="custom-select" id="status" ng-model="postToEdit.status" required>
+                                <option value="{[{ sta }]}" ng-repeat="sta in status">{[{ sta }]}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="file">Select a file: </label>
+                            <input id="file" type="file" file="file" accept="image/*"/>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="error">{[{error}]}</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" ng-click="editPost()">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- contacts Modal -->
+    <div class="modal fade" id="contactsModal" tabindex="-1" aria-labelledby="contactsModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactsModalLabel">Contacts</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group" ng-if="isAuthenticated">
+                        <li class="list-group-item d-flex align-items-center">
+                            Name:
+                            <span>
+                                {[{ postToShowContacts.author__first_name }]}
+                                {[{ postToShowContacts.author__last_name }]}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            Phone number:
+                            <span>{[{ postToShowContacts.author__profile__phone_number }]}</span>
+                        </li>
+                    </ul>
+                    <p ng-if="!isAuthenticated">login or register to see contacts</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Show posts Modal -->
+    <div class="container-fluid" id="postsContainer" style="margin-top: 20px; width:100%">
+        <div class="row">
+            <div class="card"
+                 style="width: 20rem; margin: 10px"
+                 ng-repeat="post in posts | filter: search">
+                <a href="" ng-click="addToFavorite(post.id)" ng-if="isAuthenticated">
+                    <i class="bi bi-star-fill fa-lg"
+                       ng-class="{'is-favorite': post.is_favorite, 'not-favorite': !post.is_favorite}"
+                       style="position: absolute;"></i>
+                </a>
+                <img ng-if="post.image" src="{{ MEDIA_URL }}/{[{ post.image }]}" class="card-img-top" alt="...">
+                <img ng-if="!post.image" src="{{ MEDIA_URL }}/post_images/default_post.png" class="card-img-top"
+                     alt="...">
+                <div class="card-body">
+                    <span style="line-height: 2.2">
+                        <h5 class="card-title" style="text-align: center; font-weight: bold;  font-size: 120%">{[{ post.title }]}</h5>
+                        <span for="title" style="font-weight: bold; ">Creator: </span>
+                        <span class="card-text"> {[{ post.author__username }]} </span><br>
+                        <span class="card-text">{[{ post.description }]}</span><br>
+                        <span for="title" style="font-weight: bold; ">Date: </span>
+                        <span class="card-text"> {[{ post.created_at | date:'medium' }]}</span><br>
+                        <span for="title" style="font-weight: bold; ">Category:</span>
+                        <span class="card-text">{[{ post.category__title }]}</span><br>
+                        <span for="title" style="font-weight: bold; ">Status:</span>
+                        <span class="card-text"> {[{ post.status__title }]}</span><br>
+                    </span>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editPostModal"
+                            ng-click="edit(post)"
+                            ng-disabled="post.author__username !== username">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#contactsModal"
+                            ng-click="showContacts(post)">
+                        Show contacts
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="deletePosts(post.id)"
+                            ng-disabled="post.author__username !== username && !isSuperuser">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

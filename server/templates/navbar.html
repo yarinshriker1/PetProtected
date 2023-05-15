@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" ng-controller="navbarCtrl">
+    <a class="navbar-brand" href="/"> <img width="150px" src="media/post_images/logo2.png"> </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <a ng-if="isSuperuser" class="nav-link" href="/management">Management</a>
+            <a class="nav-link" data-toggle="modal" href="/" data-target="#myLargeModal">Support</a>
+            <a class="nav-link" data-toggle="modal" href="/" data-target="#myLarge2Modal">Help Us</a>
+            <a class="nav-link" href="/about_us">About Us</a>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item" ng-if="isAuthenticated">
+                <a class="nav-link" href="/profile">{[{ username }]}</a>
+            </li>
+            <li class="nav-item" ng-if="isAuthenticated">
+                <a class="nav-link" href="/accounts/logout">Logout</a>
+            </li>
+            <li class="nav-item" ng-if="!isAuthenticated">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="myLargeModal" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="border-style: solid; border-color: #376bc8">
+        <div class="modal-content" style="background-color: #e2e8f0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLargeModalTitle">Support</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="card-text" style="text-align: center; background-color: #e2e8f0">We are here for you!
+                    <br>
+                    We would love to hear from you on any topic, request or question,
+                    <br>
+                    All you have to do is fill out the form below.
+                </p>
+                <form action="mailto:petprotected@protonmail.com" method="post" enctype="text/plain">
+                    Name:<br>
+                    <input type="text" name="name"><br>
+                    E-mail:<br>
+                    <input type="text" name="mail"><br>
+                    Comment:<br>
+                    <input type="text" name="comment" size="50"><br><br>
+                    <input class="btn btn-primary" type="submit" value="Send">
+                    <input class="btn btn-secondary" type="reset" value="Reset">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myLarge2Modal" tabindex="-1" role="dialog"
+     aria-labelledby="myLarge2ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="border-style: solid; border-color: #376bc8">
+        <div class="modal-content" style="background-color: #e2e8f0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myLarge2ModalTitle">Help Us</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="card-text" style="text-align: center; background-color: #e2e8f0; font-family: verdana ">If you
+                    feel the importance of
+                    the task we have taken on, you can join the "project supporters",
+                    in donation of a small but significant amount.
+                    This will help us in an unusual way to fund the manpower needed in our mission to change the face of
+                    the company (a larger amount can also be supported, at your choice).
+                    <br>
+                </p>
+                <p style="font-weight :bold; text-align:center">Help us fulfill that vision!<br></p>
+                <h4 style="font-weight :bold; text-align:center">Bit: 0524070161 <br></h4>
+
+
+                <img src="media/donation.png" alt="" style="width: 200px; margin-left: 280px">
+            </div>
+        </div>
+    </div>
+</div>

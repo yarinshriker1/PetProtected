@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" ng-controller="managementCtrl">
+    <div id="adminNav">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="" data-toggle="tab" data-target="#users">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" data-toggle="tab" data-target="#reviews">Reviews</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="" data-toggle="tab" data-target="#statistics">Statistics</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content container" style="margin-top: 20px">
+        <div id="users" class="tab-pane fade show  active container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th style="width: 12%" scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Phone number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Amount posts</th>
+                    <th scope="col">Last Login</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in users">
+                    <th scope="row">{[{ user.id }]}</th>
+                    <th scope="row">{[{ user.first_name }]} {[{ user.last_name }]}</th>
+                    <th scope="row">{[{ user.username }]}</th>
+                    <th scope="row">{[{ user.profile__phone_number }]}</th>
+                    <th scope="row">{[{ user.email }]}</th>
+                    <th scope="row">{[{ user.amount_posts }]}</th>
+                    <th style="width: 150%" scope="row">{[{ user.last_login | date:'medium' }]}</th>
+                    <th scope="row">
+                        <button class="btn btn-danger" ng-click="deleteUser(user.id)">Delete user</button>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="reviews" class="tab-pane fade container">
+             <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th style="width: 12%" scope="col">Name</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="review in reviews">
+                    <th scope="row">{[{ review.id }]}</th>
+                    <th scope="row">{[{ review.Fullname }]}</th>
+                    <th scope="row">{[{ review.title }]}</th>
+                    <th scope="row">{[{ review.email }]}</th>
+                    <th scope="row">{[{ review.description }]}</th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="statistics" class="tab-pane fade in container">
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Amount users
+                    <span class="badge badge-primary badge-pill">{[{ amountUsers }]}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Amount posts
+                    <span class="badge badge-primary badge-pill">{[{ amountPosts }]}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Amount reviews
+                    <span class="badge badge-primary badge-pill">{[{ amountReviews }]}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <br>
+        <button  type="button" class="btn btn-secondary btn-lg" style="float: right" onClick="window.print()"> <i class="bi bi-printer"></i> Print
+        </button>
+    </div>
+</div>
+{% endblock %}
